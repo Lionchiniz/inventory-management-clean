@@ -1,68 +1,38 @@
-/* Container */
-.container {
-  max-width: 600px;
-  margin: 40px auto;
+.App {
   text-align: center;
-  font-family: Arial, sans-serif;
 }
 
-/* Form */
-.form {
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-/* Inputs */
-.input {
-  padding: 10px;
-  font-size: 16px;
-}
-
-/* Button */
-.button {
-  padding: 10px;
-  background-color: #007bff;
-  color: rgba(109, 151, 13, 0.858);
-  border: none;
-  cursor: pointer;
-}
-
-/* List */
-.list {
-  list-style: none;
-  padding: 0;
-}
-
-/* List Item */
-.list-item {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin-bottom: 10px;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
 }
 
-/* Buttons */
-.edit-btn {
-  margin-right: 10px;
-  background-color: orange;
-  border: none;
-  padding: 5px 10px;
-  cursor: pointer;
+.App-link {
+  color: #61dafb;
 }
 
-.delete-btn {
-  background-color: red;
-  color: rgba(34, 81, 17, 0.929);
-  border: none;
-  padding: 5px 10px;
-  cursor: pointer;
-}
-
-/* Error */
-.error {
-  color: red;
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
