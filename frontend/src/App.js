@@ -146,11 +146,10 @@ function App() {
     <div className="app">
       <header className="hero">
         <div>
-          <p className="eyebrow">Sprint 2 Frontend</p>
+          <p className="eyebrow">Inventory Management System</p>
           <h1>Inventory Management Dashboard</h1>
           <p className="hero-text">
-            A React single-page application with professional UI and full CRUD
-            functionality.
+            Enterprise Inventory Management System.
           </p>
         </div>
       </header>
