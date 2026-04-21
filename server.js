@@ -1,41 +1,28 @@
+// ✅ Load env FIRST
 require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
 const db = require("./mysql");
+
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const app = express();
-
-const PORT = process.env.PORT || 5000;
 const SECRET = process.env.JWT_SECRET || "supersecretkey";
 
-const allowedOrigins = [
-  process.env.FRONTEND_URL,
-  "http://localhost:5173",
-  "http://localhost:3000",
-].filter(Boolean);
-
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin) return callback(null, true);
-
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      }
-
-      return callback(new Error("Not allowed by CORS"));
-    },
-    methods: ["GET", "POST", "PUT", "DELETE"],
-  })
-);
+// ==============================
+// ✅ MIDDLEWARE
+// ==============================
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+}));
 
 app.use(express.json());
 
 // ==============================
-// 🔐 TOKEN MIDDLEWARE
+// 🔐 TOKEN MIDDLEWARE (FIXED)
 // ==============================
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
@@ -44,6 +31,7 @@ const verifyToken = (req, res, next) => {
     return res.status(401).json({ error: "Access denied. No token." });
   }
 
+  // ✅ Expect: Bearer TOKEN
   const parts = authHeader.split(" ");
 
   if (parts.length !== 2 || parts[0] !== "Bearer") {
@@ -54,7 +42,10 @@ const verifyToken = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, SECRET);
+
+    // 🔥 Debug log (helps you + professor)
     console.log("✅ Token verified:", decoded.email);
+
     req.user = decoded;
     next();
   } catch (err) {
@@ -129,6 +120,7 @@ app.post("/users/login", async (req, res) => {
       message: "Login successful ✅",
       token,
     });
+
   } catch (err) {
     console.error("LOGIN ERROR:", err);
     res.status(500).json({ error: "Login failed" });
@@ -168,13 +160,14 @@ app.post("/api/products", verifyToken, async (req, res) => {
       message: "Product added ✅",
       id: result.insertId,
     });
+
   } catch (err) {
     console.error("POST ERROR:", err);
     res.status(500).json({ error: "Failed to add product" });
   }
 });
 
-// 🔥 UPDATE PRODUCT
+// 🔥 UPDATE PRODUCT (FIXED)
 app.put("/api/products/:id", verifyToken, async (req, res) => {
   try {
     const { id } = req.params;
@@ -194,6 +187,7 @@ app.put("/api/products/:id", verifyToken, async (req, res) => {
     }
 
     res.json({ message: "Product updated ✅" });
+
   } catch (err) {
     console.error("PUT ERROR:", err);
     res.status(500).json({ error: "Failed to update product" });
@@ -215,6 +209,7 @@ app.delete("/api/products/:id", verifyToken, async (req, res) => {
     }
 
     res.json({ message: "Product deleted ✅" });
+
   } catch (err) {
     console.error("DELETE ERROR:", err);
     res.status(500).json({ error: "Failed to delete product" });
@@ -224,6 +219,8 @@ app.delete("/api/products/:id", verifyToken, async (req, res) => {
 // ==============================
 // 🚀 START SERVER
 // ==============================
+const PORT = 5000;
+
 app.listen(PORT, async () => {
   console.log(`🚀 Server running on port ${PORT}`);
 
